@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<Actor>
+
+@{
+
+}
+<style>
+    .btn-success {
+        position: relative;
+        top: -7px;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <hr>
+        @using(Html.BeginForm("CreateActor","Actors"))
+        {
+            <center><input type="submit" value="Add New" class="btn btn-success"/></center>
+        }
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.AvatarURL)</th>
+                    <th>@Html.DisplayNameFor(m => m.Name)</th>
+                    <th>@Html.DisplayNameFor(m => m.Bio)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prop in Model)
+                {
+                    <tr>
+                        <td class =" align-middle">
+                            <img class="rounded-circle" src="@prop.AvatarURL" alt="@prop.Name" style="max-width: 150px">
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => prop.Name)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => prop.Bio)
+                        </td>
+                        <td class="align-middle">
+                            @*<input type="submit" value="@prop.Id" name="actorId" class="btn-success" asp-controller="Actors" asp-action="Details" />*@
+                             @using(Html.BeginForm("Details","Actors"))
+                             {
+                               <input type="hidden" name="ActorId" value="@prop.Id" />
+                               <input type="submit" value="Details" class="btn btn-info" />
+                             }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

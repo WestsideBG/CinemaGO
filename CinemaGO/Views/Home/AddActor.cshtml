@@ -1,0 +1,23 @@
+﻿<h2>Calculate Simple Interest</h2>  
+<fieldset>  
+        <legend>Calculate Simple Interest</legend>  
+        @(Html.BeginForm("AddActorPost", "Home", FormMethod.Post))
+    {  
+        <div id="divInterestDeatils"></div>  
+        <ol>  
+            <li>  
+                @Html.Label("AvatarURL")  
+                @Html.TextBox("actorAvatar")  
+            </li>  
+            <li>  
+                @Html.Label("Actor Name")  
+                @Html.TextBox("actorName")  
+            </li>  
+            <li>  
+                @Html.Label("Actor Biography")  
+                @Html.TextBox("actorBio")  
+            </li>   
+        </ol>  
+    <button>Calculate</button>  
+    }     
+</fieldset>  
