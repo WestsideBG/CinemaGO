@@ -9,5 +9,6 @@ namespace CinemaGO.Data.Services
         Movie GetMovieById(int id);
 
         void Add(Movie movie);
+        List<Movie> GetMovieByTitle(string title);
     }
 }

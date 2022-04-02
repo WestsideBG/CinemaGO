@@ -23,10 +23,17 @@ namespace CinemaGO.Data.Services
             return _dbContext.Movies.SingleOrDefault(x => x.Id == id);
         }
 
-        public void Add(Movie movie)
+        void IMovieService.Add(Movie movie)
         {
             this._dbContext.Movies.Add(movie);
             this._dbContext.SaveChanges();
         }
-    }
+
+
+		List<Movie> IMovieService.GetMovieByTitle(string title)
+		{
+			List<Movie> movie = _dbContext.Movies.Where(m => m.Title.Contains(title)).ToList();
+            return movie;
+		}
+	}
 }

@@ -1,4 +1,5 @@
 ﻿using CinemaGO.Data;
+using CinemaGO.Data.Services;
 using CinemaGO.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,18 @@ namespace CinemaGO.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMovieService _service;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IMovieService service)
         {
             _logger = logger;
+            _service = service;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var movies = _service.GetAll();
+            return View(movies);
         }
 
         public IActionResult Privacy()

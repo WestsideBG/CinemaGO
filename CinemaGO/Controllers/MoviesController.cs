@@ -3,8 +3,12 @@ using CinemaGO.Data.Services;
 using CinemaGO.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using MySqlX.XDevAPI;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 namespace CinemaGO.Controllers
@@ -18,10 +22,43 @@ namespace CinemaGO.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+		public IActionResult Index()
         {
-            var movies = _service.GetAll();
-            return View(movies);
+            var title = TempData["title"];
+            IEnumerable<Movie> movies;
+            if (title != null)
+            {
+                movies = _service.GetMovieByTitle(title.ToString());
+            }
+            else
+			{
+                movies = _service.GetAll();
+            }
+
+            MovieViewModel model = new MovieViewModel();
+            var request = Request.Path.ToString().Split('/', StringSplitOptions.RemoveEmptyEntries);
+            int page = 1;
+            if (request.Length > 2)
+            {
+                page = int.Parse(request[2]);
+            }
+            
+            model.CurrentPage = page;
+            if (page > 1)
+            {
+                model.MovieIndex = (page * 10) - 10;
+                model.MovieEndIndex = model.MovieIndex + 10;
+            }
+            else
+            {
+                model.MovieIndex = 0;
+                model.MovieEndIndex = 10;
+            }
+
+            model.Movies = movies.ToList();
+
+
+            return View(model);
         }
 
         [HttpGet]
@@ -29,6 +66,17 @@ namespace CinemaGO.Controllers
         {
             return View();
         }
+
+  //      public IActionResult Search(string searchbar)
+		//{
+  //          var movies = _service.GetMovieByTitle(searchbar);
+  //          MovieViewModel model = new MovieViewModel();
+  //          model.Movies = movies;
+  //          model.CurrentPage = 1;
+  //          model.MovieIndex = 0;
+  //          model.MovieEndIndex = 10;
+  //          return Index(model);
+		//}
 
         [HttpPost]
         public IActionResult Create(string title, 
@@ -77,5 +125,7 @@ namespace CinemaGO.Controllers
         //    var title = Request.Form["title"].ToString();
         //    return RedirectToAction("Index");
         //}
+
+
     }
 }

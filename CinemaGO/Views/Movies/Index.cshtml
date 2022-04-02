@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Movie>
+﻿@model MovieViewModel
 <!DOCTYPE html>
 <!--[if IE 7]>
 <html class="ie ie7 no-js" lang="en-US">
@@ -56,7 +56,7 @@
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							Home <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="index-2.html">Home 01</a></li>
@@ -66,7 +66,7 @@
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							movies<img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li class="dropdown">
@@ -83,7 +83,7 @@
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							celebrities <i class="fa fa-angle-down" aria-hidden="true"></i>
+							celebrities <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="celebritygrid01.html">celebrity grid 01</a></li>
@@ -94,7 +94,7 @@
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							news <i class="fa fa-angle-down" aria-hidden="true"></i>
+							news <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="bloglist.html">blog List</a></li>
@@ -104,7 +104,7 @@
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							community <i class="fa fa-angle-down" aria-hidden="true"></i>
+							community <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="userfavoritegrid.html">user favorite grid</a></li>
@@ -117,7 +117,7 @@
 					<ul class="nav navbar-nav flex-child-menu menu-right">
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							pages <i class="fa fa-angle-down" aria-hidden="true"></i>
+							pages <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="landing.html">Landing</a></li>
@@ -134,13 +134,31 @@
 	    </nav>
 	    
 	    <!-- top search form -->
+		<form asp-controller="Search" asp-action="Search">
 	    <div class="top-search">
-	    	<select>
-				<option value="united">TV show</option>
-				<option value="saab">Others</option>
+	    	<select name="type">
+				<option value="movie">Movies</option>
+				<option value="others">Others</option>
 			</select>
-			<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+
+				<input id="address" type="text" name="searchbar" onkeypress="handle(event)" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
 	    </div>
+		</form>
+
+@*		<script>
+			function handle(e){
+				address=document.getElementById("address").value;
+				if(e.keyCode === 13){
+					//write your specific code from here
+				   var baseUrl="@Url.Action("Index","Movies")";
+				   alert(baseUrl);
+				   // Now append your query string variables to baseUrl
+				   // Ex : baseUrl=baseUrl+"?searchString=testing"; 
+				   window.location.href=baseUrl;
+				}
+				return false;
+			}
+	</script>*@
 	</div>
 </header>
 <!-- END | Header -->
@@ -165,7 +183,7 @@
 		<div class="row ipad-width2">
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="topbar-filter">
-					<p>Found <span>1,608 movies</span> in total</p>
+					<p>Found <span>@Model.Movies.Count movies</span> in total</p>
 					<label>Sort by:</label>
 					<select>
 						<option value="popularity">Popularity Descending</option>
@@ -178,34 +196,47 @@
 					<a href="movielist.html" class="list"><i class="ion-ios-list-outline active"></i></a>
 					<a  href="moviegrid.html" class="grid"><i class="ion-grid"></i></a>
 				</div>
-				@{
-					@foreach (var movie in @Model)
-					{
-						<div class="movie-item-style-2">
-							<img src="@movie.CoverURL" alt="">
-							<div class="mv-item-infor">
-								
-								<h6><a href="moviesingle.html">@movie.Title</a></h6>
-								<p class="describe">@movie.Description</p>
-								<p class="run-time"> Duration: @(movie.Duration)h.</p>
-								<p>Release: @movie.Release</p>
-								<p>Director: Not Available<a href="#">
-								</a></p>
-							</div>
-						</div>
-					}
-				}
+				<div class="data">
+						@{
+							if (Model.Movies.Any())
+							{
+								for (var i = Model.MovieIndex; i < @Model.MovieEndIndex; i++)
+								{
+									if (Model.Movies.Count - 1 >= i)
+									{
+										<div class="movie-item-style-2">
+										<img src="@Model.Movies[i].CoverURL" alt="">
+										<div class="mv-item-infor">
+											<h6><a href="moviesingle.html">@Model.Movies[i].Title</a></h6>
+											<p class="describe">@Model.Movies[i].Description</p>
+											<p class="run-time"> Duration: @(Model.Movies[i].Duration)h.</p>
+											<p>Release: @Model.Movies[i].Release</p>
+											<p>Director: Not Available<a href="#">
+											</a></p>
+										</div>
+									</div>
+									}
+								}
+							}
+						}
+				</div>
 				<div class="topbar-filter">
 					<label>Movies per page:</label>
-					<select>
-						<option value="range">5 Movies</option>
-						<option value="saab">10 Movies</option>
-					</select>
 					<div class="pagination2">
-						<span>Page 1 of 2:</span>
-						<a class="active" href="#">1</a>
-						<a href="#">2</a>
-						<a href="#"><i class="ion-arrow-right-b"></i></a>
+							@{
+								for (var i = 1; i <= Math.Ceiling((decimal)@Model.Movies.Count()/10); i++)
+								{
+									//if i == currentpage then it should be active
+									if (i == Model.CurrentPage)
+									{
+										<a class="active" href="~/Movies/Index/@i">@i</a>
+									}
+									else
+									{
+										<a href="~/Movies/Index/@i">@i</a>
+									}
+								}
+							}
 					</div>
 				</div>
 			</div>
@@ -274,19 +305,6 @@
 					</div>
 					<div class="ads">
 						<img src="~/images/uploads/ads1.png" alt="">
-					</div>
-					<div class="sb-facebook sb-it">
-						<h4 class="sb-title">Find us on Facebook</h4>
-						<iframe src="#" data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftemplatespoint.net%2F%3Ffref%3Dts&tabs=timeline&width=340&height=315px&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=true&appId"  height="315" style="width:100%;border:none;overflow:hidden" ></iframe>
-					</div>
-					<div class="sb-twitter sb-it">
-						<h4 class="sb-title">Tweet to us</h4>
-						<div class="slick-tw">
-							<div class="tweet item" id=""><!-- Put your twiter id here -->
-							</div>
-							<div class="tweet item" id=""><!-- Put your 2nd twiter account id here -->
-							</div>
-						</div>							
 					</div>
 				</div>
 			</div>
