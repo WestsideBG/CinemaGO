@@ -10,5 +10,6 @@ namespace CinemaGO.Data.Services
 
         void Add(Movie movie);
         List<Movie> GetMovieByTitle(string title);
+        IEnumerable<Movie> GetMovieByGenre(string[] genres);
     }
 }

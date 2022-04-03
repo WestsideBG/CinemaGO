@@ -1,5 +1,6 @@
 ﻿using CinemaGO.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +37,27 @@ namespace CinemaGO.Data.Services
 			List<Movie> movie = _dbContext.Movies.Where(m => m.Title.Contains(title)).ToList();
             return movie;
 		}
-	}
+
+        IEnumerable<Movie> IMovieService.GetMovieByGenre(string[] genres)
+        {
+            List<Movie> movies = new List<Movie>();
+            foreach (var movie in _dbContext.Movies)
+            {
+                string[] currGenres = JsonConvert.DeserializeObject<string[]>(movie.Genre);
+                for (int i = 0; i < genres.Length; i++)
+                {
+                    for (int j = 0; j < currGenres.Length; j++)
+                    {
+                        if (genres[i] == currGenres[j])
+                        {
+                            if (!movies.Any(m => m.Id == movie.Id))
+                            movies.Add(movie);
+                        }
+                    }
+                }
+            }
+
+            return movies;
+        }
+    }
 }

@@ -25,18 +25,20 @@ namespace CinemaGO.Controllers
 
 		public IActionResult Index()
         {
-            var title = TempData["title"];
-            IEnumerable<Movie> movies;
-            if (title != null)
+            var moviesTemp = TempDataExtensions.Get<MovieViewModel>(TempData, "Model");
+            //moviesTemp = null;
+
+            IEnumerable<Movie> movies = null;
+            MovieViewModel model = new MovieViewModel();
+            if (moviesTemp != null)
             {
-                movies = _service.GetMovieByTitle(title.ToString());
+                model.Movies = moviesTemp.Movies.ToList();
             }
             else
-			{
-                movies = _service.GetAll();
+            {
+                model.Movies = _service.GetAll().ToList();
             }
-
-            MovieViewModel model = new MovieViewModel();
+             
             var request = Request.Path.ToString().Split('/', StringSplitOptions.RemoveEmptyEntries);
             int page = 1;
             if (request.Length > 2)
@@ -61,8 +63,6 @@ namespace CinemaGO.Controllers
                 model.MovieIndex = 0;
                 model.MovieEndIndex = 10;
             }
-
-            model.Movies = movies.ToList();
 
 
             return View(model);
@@ -106,9 +106,6 @@ namespace CinemaGO.Controllers
             _service.Add(movie);
             return RedirectToAction("Index");
         }
-
-
-
 
     }
 }
