@@ -86,8 +86,8 @@ namespace CinemaGO.Controllers
 		//}
 
         [HttpPost]
-        public IActionResult Create(string title, 
-                                    string genre, 
+        public IActionResult Create(string title,
+                                    string[] genres,
                                     string release, 
                                     int durationMins,
                                     string description, 
@@ -101,8 +101,8 @@ namespace CinemaGO.Controllers
             TimeSpan ts = TimeSpan.FromMinutes(durationMins);
             string parsedDuration = string.Format("{0:00}:{1:00}", (int)ts.TotalHours, ts.Minutes);
             DateTime releaseDate = DateTime.Parse(release);
-            Genres parsedGenre = (Genres)Enum.Parse(typeof(Genres), genre);
-            Movie movie = new Movie(title, parsedGenre,releaseDate, parsedDuration, description,coverURL,bgURL,image1,image2,image3,image4);
+            string genresJSON = JsonConvert.SerializeObject(genres);
+            Movie movie = new Movie(title, genresJSON, releaseDate, parsedDuration, description,coverURL,bgURL,image1,image2,image3,image4);
             _service.Add(movie);
             return RedirectToAction("Index");
         }

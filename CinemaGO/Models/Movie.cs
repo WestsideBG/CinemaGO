@@ -19,7 +19,7 @@ namespace CinemaGO.Models
         public string Image4URL { get; set; }
         public string Duration { get; set; }
         public DateTime Release { get; set; }
-        public Genres Genre { get; set; } 
+        public string Genre { get; set; } 
 
         //DbRelations
         public List<Movie_Actor> Actors { get; set; }
@@ -35,7 +35,7 @@ namespace CinemaGO.Models
         }
 
         public Movie(string title,
-                     Genres genre,
+                     string genre,
                      DateTime release,
                      string duration,
                      string description,

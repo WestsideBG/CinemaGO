@@ -6506,7 +6506,7 @@ ul {
   text-transform: none;
   border-top: 1px solid #405266;
 }
-.form-style-1 .group-ip .ui.multiple.dropdown > .label {
+.group-ip .ui.multiple.dropdown > .label {
   font-family: 'Nunito', sans-serif;
   font-size: 12px;
   color: #ffffff;
@@ -6520,6 +6520,8 @@ ul {
   padding: 10px;
   text-align: center;
 }
+
+
 .form-style-1 .group-ip .ui.label > .close.icon,
 .form-style-1 .group-ip .ui.label > .delete.icon {
   -moz-opacity: 1;
