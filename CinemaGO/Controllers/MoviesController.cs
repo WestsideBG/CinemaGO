@@ -26,17 +26,38 @@ namespace CinemaGO.Controllers
 		public IActionResult Index()
         {
             var moviesTemp = TempDataExtensions.Get<MovieViewModel>(TempData, "Model");
+            object order = TempData["Order"];
+            string orderBy = "";
+            TempData["order"] = null;
+            if (order != null)
+            {
+                orderBy = order.ToString();
+            }
             //moviesTemp = null;
 
             IEnumerable<Movie> movies = null;
             MovieViewModel model = new MovieViewModel();
             if (moviesTemp != null)
             {
-                model.Movies = moviesTemp.Movies.ToList();
+                if (orderBy == "Desc")
+                {
+                    model.Movies = moviesTemp.Movies.OrderByDescending(m => m.Title).ToList();
+                }
+                else
+                {
+                    model.Movies = moviesTemp.Movies.OrderBy(m => m.Title).ToList();
+                }
             }
             else
             {
-                model.Movies = _service.GetAll().ToList();
+                if (orderBy == "Desc")
+                {
+                    model.Movies = _service.GetAll().OrderByDescending(m => m.Title).ToList();
+                }
+                else
+                {
+                    model.Movies = _service.GetAll().OrderBy(m => m.Title).ToList();
+                }
             }
              
             var request = Request.Path.ToString().Split('/', StringSplitOptions.RemoveEmptyEntries);
@@ -107,5 +128,10 @@ namespace CinemaGO.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult OrderByDesc()
+        {
+            TempData["Order"] = "Desc";
+            return RedirectToAction("Index");
+        }
     }
 }

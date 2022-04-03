@@ -1,4 +1,5 @@
 ﻿@using CinemaGO.Data.Enums
+@using Newtonsoft.Json
 @model MovieViewModel
 <!DOCTYPE html>
 <!--[if IE 7]>
@@ -179,14 +180,12 @@
 				<div class="topbar-filter">
 					<p>Found <span>@Model.Movies.Count movies</span> in total</p>
 					<label>Sort by:</label>
-					<select>
-						<option value="popularity">Popularity Descending</option>
-						<option value="popularity">Popularity Ascending</option>
-						<option value="rating">Rating Descending</option>
-						<option value="rating">Rating Ascending</option>
-						<option value="date">Release date Descending</option>
-						<option value="date">Release date Ascending</option>
+					<form asp-controller="Movies" asp-action="OrderByDesc">
+					<select onchange="this.form.submit()">
+						<option></option>
+						<option>Movie Name Descending</option>
 					</select>
+					</form>
 					<a href="movielist.html" class="list"><i class="ion-ios-list-outline active"></i></a>
 					<a  href="moviegrid.html" class="grid"><i class="ion-grid"></i></a>
 				</div>
@@ -203,6 +202,11 @@
 										<div class="mv-item-infor">
 											<h6><a href="moviesingle.html">@Model.Movies[i].Title</a></h6>
 											<p class="describe">@Model.Movies[i].Description</p>
+												@{
+													var genres = JsonConvert.DeserializeObject<string[]>(Model.Movies[i].Genre);
+													string genresFinal = String.Join(", ", genres);
+													<p>Genre: @genresFinal</p>
+												}
 											<p class="run-time"> Duration: @(Model.Movies[i].Duration)h.</p>
 											<p>Release: @Model.Movies[i].Release</p>
 											<p>Director: Not Available<a href="#">
@@ -215,7 +219,7 @@
 						}
 				</div>
 				<div class="topbar-filter">
-					<label>Movies per page: <b>10</b></label>
+					<p>Movies per page: <span>10</span></p>
 					<div class="pagination2">
 							@{
 								for (var i = 1; i <= Math.Ceiling((decimal)@Model.Movies.Count()/10); i++)
