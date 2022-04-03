@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using CinemaGO.Data.Enums
+<!DOCTYPE html>
 <!--[if IE 7]>
 <html class="ie ie7 no-js" lang="en-US">
 <![endif]-->
@@ -54,57 +55,51 @@
 						<li class="hidden">
 							<a href="#page-top"></a>
 						</li>
-						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
-							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="index-2.html">Home 01</a></li>
-								<li><a href="homev2.html">Home 02</a></li>
-								<li><a href="homev3.html">Home 03</a></li>
-							</ul>
+						<li>
+						<a href="~/Home/Index">Home</a>
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							movies <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Movie grid<i class="ion-ios-arrow-forward"></i></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Category<i class="ion-ios-arrow-forward"></i></a>
 									<ul class="dropdown-menu level2">
-										<li><a href="moviegrid.html">Movie grid</a></li>
-										<li><a href="moviegridfw.html">movie grid full width</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Action</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Anime</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Comedy</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Documental</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Drama</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Horror</a></li>
+										<li><a href="/Error/Commingsoon">@Genres.Trailer</a></li>
 									</ul>
 								</li>			
-								<li><a href="movielist.html">Movie list</a></li>
-								<li><a href="moviesingle.html">Movie single</a></li>
-								<li class="it-last"><a href="seriessingle.html">Series single</a></li>
+								<li><a href="/Movies/Index">Movie list</a></li>
 							</ul>
 						</li>
 						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							celebrities <i class="fa fa-angle-down" aria-hidden="true"></i>
+							celebrities <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
-								<li><a href="celebritygrid01.html">celebrity grid 01</a></li>
-								<li><a href="celebritygrid02.html">celebrity grid 02 </a></li>
+									<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >Category<i class="ion-ios-arrow-forward"></i></a>
+										<ul class="dropdown-menu level2">
+											<li><a href="/Error/Commingsoon">Actor</a></li>
+											<li><a href="/Error/Commingsoon">Director</a></li>
+											<li><a href="/Error/Commingsoon">Other</a></li>
+										</ul>
+									</li>
 								<li><a href="celebritylist.html">celebrity list</a></li>
-								<li class="it-last"><a href="celebritysingle.html">celebrity single</a></li>
 							</ul>
 						</li>
-						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							news <i class="fa fa-angle-down" aria-hidden="true"></i>
-							</a>
-							<ul class="dropdown-menu level1">
-								<li><a href="bloglist.html">blog List</a></li>
-								<li><a href="bloggrid.html">blog Grid</a></li>
-								<li class="it-last"><a href="blogdetail.html">blog Detail</a></li>
-							</ul>
+						<li>
+							<a href="~/Error/Commingsoon">BLOG</a>
 						</li>
-						<li class="dropdown first">
+@*						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							community <i class="fa fa-angle-down" aria-hidden="true"></i>
+							community <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="userfavoritegrid.html">user favorite grid</a></li>
@@ -112,35 +107,53 @@
 								<li><a href="userprofile.html">user profile</a></li>
 								<li class="it-last"><a href="userrate.html">user rate</a></li>
 							</ul>
-						</li>
+						</li>*@
 					</ul>
 					<ul class="nav navbar-nav flex-child-menu menu-right">
-						<li class="dropdown first">
+@*						<li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							pages <i class="fa fa-angle-down" aria-hidden="true"></i>
+							pages <img src="~/images/uploads/drop-icon.png" />
 							</a>
 							<ul class="dropdown-menu level1">
 								<li><a href="landing.html">Landing</a></li>
 								<li><a href="404.html">404 Page</a></li>
 								<li class="it-last"><a href="comingsoon.html">Coming soon</a></li>
 							</ul>
-						</li>                
-						<li><a href="#">Help</a></li>
-						<li class="loginLink"><a href="#">LOG In</a></li>
-						<li class="btn signupLink"><a href="#">sign up</a></li>
+						</li> *@               
+						<li><a href="/Error/Commingsoon">Help</a></li>
+						<li><a href="/Error/Commingsoon">Log in</a></li>
+						<li class="btn signupLink"><a href="/Error/Commingsoon">sign up</a></li>
 					</ul>
 				</div>
 			<!-- /.navbar-collapse -->
 	    </nav>
 	    
 	    <!-- top search form -->
+		<form asp-controller="Search" asp-action="Search">
 	    <div class="top-search">
-	    	<select>
-				<option value="united">TV show</option>
-				<option value="saab">Others</option>
+	    	<select name="type">
+				<option value="movie">Movies</option>
+				<option value="others">Others</option>
 			</select>
-			<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+
+				<input id="address" type="text" name="searchbar" onkeypress="handle(event)" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
 	    </div>
+		</form>
+
+@*		<script>
+			function handle(e){
+				address=document.getElementById("address").value;
+				if(e.keyCode === 13){
+					//write your specific code from here
+				   var baseUrl="@Url.Action("Index","Movies")";
+				   alert(baseUrl);
+				   // Now append your query string variables to baseUrl
+				   // Ex : baseUrl=baseUrl+"?searchString=testing"; 
+				   window.location.href=baseUrl;
+				}
+				return false;
+			}
+	</script>*@
 	</div>
 </header>
 <!-- END | Header -->

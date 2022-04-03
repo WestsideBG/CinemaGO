@@ -3,6 +3,7 @@ using CinemaGO.Data.Services;
 using CinemaGO.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using MySqlX.XDevAPI;
 using Newtonsoft.Json;
@@ -40,7 +41,13 @@ namespace CinemaGO.Controllers
             int page = 1;
             if (request.Length > 2)
             {
-                page = int.Parse(request[2]);
+                bool isCompleted;
+                isCompleted = int.TryParse(request[2], out page);
+
+                if (!isCompleted)
+				{
+                    return RedirectToAction("NotFound", "Error");
+				}
             }
             
             model.CurrentPage = page;
@@ -100,31 +107,7 @@ namespace CinemaGO.Controllers
             return RedirectToAction("Index");
         }
 
-        //public IActionResult AddMovie()
-        //{
-        //    var title = Request.Form["title"].ToString();
-        //    var firstName = Request.Form["firstName"].ToString();
-        //    var lastName = Request.Form["lastName"].ToString();
-        //    var producerName = firstName + " " + lastName;
-        //    Genres genre = (Genres)Enum.Parse(typeof(Genres), Request.Form["genre"].ToString());
 
-        //    var coverURL = Request.Form["coverURL"].ToString();
-        //    var price = double.Parse(Request.Form["price"].ToString());
-        //    var description = Request.Form["description"].ToString();
-        //    var startDate = DateTime.Parse(Request.Form["startDate"].ToString());
-        //    var endDate = DateTime.Parse(Request.Form["endDate"].ToString());
-
-        //    var movie = new Movie(title, description, startDate, endDate, price, genre, coverURL);
-        //    _service.Add(movie);
-
-        //    return RedirectToAction("Index");
-        //}
-        //[HttpPost]
-        //public IActionResult AddMovie(string firstName)
-        //{
-        //    var title = Request.Form["title"].ToString();
-        //    return RedirectToAction("Index");
-        //}
 
 
     }

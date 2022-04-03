@@ -21,7 +21,6 @@ namespace CinemaGO.Controllers
             {
                 TempData["title"] = searchbar;
                 return RedirectToAction("Index", "Movies");
-
             }
             return RedirectToAction("Index");
         }
