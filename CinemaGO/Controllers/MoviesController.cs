@@ -89,6 +89,69 @@ namespace CinemaGO.Controllers
             return View(model);
         }
 
+        public IActionResult IndexGrid()
+        {
+            object order = TempData["Order"];
+            string orderBy = "";
+            TempData["order"] = null;
+            if (order != null)
+            {
+                orderBy = order.ToString();
+            }
+
+            MovieViewModel model = new MovieViewModel();
+            var moviesTemp = TempDataExtensions.Get<MovieViewModel>(TempData, "Model");
+            if (moviesTemp != null)
+            {
+                if (orderBy == "Desc")
+                {
+                    model.Movies = moviesTemp.Movies.OrderByDescending(m => m.Title).ToList();
+                }
+                else
+                {
+                    model.Movies = moviesTemp.Movies.OrderBy(m => m.Title).ToList();
+                }
+            }
+            else
+            {
+                if (orderBy == "Desc")
+                {
+                    model.Movies = _service.GetAll().OrderByDescending(m => m.Title).ToList();
+                }
+                else
+                {
+                    model.Movies = _service.GetAll().OrderBy(m => m.Title).ToList();
+                }
+            }
+
+            var request = Request.Path.ToString().Split('/', StringSplitOptions.RemoveEmptyEntries);
+            int page = 1;
+            if (request.Length > 2)
+            {
+                bool isCompleted;
+                isCompleted = int.TryParse(request[2], out page);
+
+                if (!isCompleted)
+                {
+                    return RedirectToAction("NotFound", "Error");
+                }
+            }
+
+            model.CurrentPage = page;
+            if (page > 1)
+            {
+                model.MovieIndex = (page * 10) - 10;
+                model.MovieEndIndex = model.MovieIndex + 10;
+            }
+            else
+            {
+                model.MovieIndex = 0;
+                model.MovieEndIndex = 10;
+            }
+
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -128,10 +191,32 @@ namespace CinemaGO.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult OrderByDesc()
+        public IActionResult OrderBy(string order)
         {
-            TempData["Order"] = "Desc";
+            if (order == "asc")
+            {
+                TempData["Order"] = "Asc";
+            }
+            else if (order == "desc")
+            {
+                TempData["Order"] = "Desc";
+            }
+
             return RedirectToAction("Index");
+        }
+
+        public IActionResult OrderByGrid(string order)
+        {
+            if (order == "asc")
+            {
+                TempData["Order"] = "Asc";
+            }
+            else if (order == "desc")
+            {
+                TempData["Order"] = "Desc";
+            }
+
+            return RedirectToAction("IndexGrid");
         }
     }
 }

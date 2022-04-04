@@ -130,7 +130,7 @@
 	    </nav>
 	    
 	    <!-- top search form -->
-		<form asp-controller="Search" asp-action="Search">
+		<form asp-controller="Search" asp-action="SearchGrid">
 	    <div class="top-search">
 	    	<select name="type">
 				<option value="movie">Movies</option>
@@ -164,72 +164,66 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="hero-ct">
-					<h1> movies</h1>
+					<h1> movie listing - grid</h1>
 					<ul class="breadcumb">
-						<li class="active"><a href="/Home/Index">Home</a> <span class="ion-ios-arrow-right"></span> movie listing</li>
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="page-single movie_list">
+<div class="page-single">
 	<div class="container">
-		<div class="row ipad-width2">
+		<div class="row ipad-width">
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="topbar-filter">
 					<p>Found <span>@Model.Movies.Count movies</span> in total</p>
 					<label>Sort by:</label>
-					<form asp-controller="Movies" asp-action="OrderBy">
+					<form asp-controller="Movies" asp-action="OrderByGrid">
 					<select name="order" onchange="this.form.submit()">
 						<option></option>
 						<option value="asc">Movie Name Ascending</option>
 						<option value="desc">Movie Name Descending</option>
 					</select>
 					</form>
-					<a href="#" class="list"><i class="ion-ios-list-outline active"></i></a>
-					<a  href="/Movies/IndexGrid" class="grid"><i class="ion-grid"></i></a>
+					<a href="/Movies/Index" class="list"><i class="ion-ios-list-outline"></i></a>
+					<a  href="#" class="grid"><i class="ion-grid active"></i></a>
 				</div>
-				<div class="data">
-						@{
-							if (Model.Movies.Any())
-							{
-								for (var i = Model.MovieIndex; i < @Model.MovieEndIndex; i++)
-								{
-									if (Model.Movies.Count - 1 >= i)
-									{
-										<div class="movie-item-style-2">
-										<img src="@Model.Movies[i].CoverURL" alt="">
-										<div class="mv-item-infor">
-											<h6><a href="moviesingle.html">@Model.Movies[i].Title</a></h6>
-											<p class="describe">@Model.Movies[i].Description</p>
-	    								<div class="cate">
-												@{
-													var genres = JsonConvert.DeserializeObject<string[]>(Model.Movies[i].Genre);
-													foreach (var genre in genres)
-													{
-														if (genre == Genres.Drama.ToString())
-														{
-															<span class="blue">@Genres.Drama</span>
-														};
-														if (genre == Genres.Action.ToString())
-														{
-															<span class="green">@Genres.Action</span>
-														}
-													}
+				<div class="flex-wrap-movielist">
+					@{
+						foreach (var movie in Model.Movies)
+						
+						{
+							<div class="movie-item-style-2 movie-item-style-1">
+								<img src="@movie.CoverURL" alt="@movie.Title">
+								<div class="hvr-inner">
+	            					<a  href="/Error/Commingsoon"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+	            				</div>
+								<div class="mv-item-infor">
+									<h6><a href="/Error/Commingsoon">@movie.Title</a></h6>
+	    						<div class="cate">
+										@{
+											var genres = JsonConvert.DeserializeObject<string[]>(movie.Genre);
+											foreach (var genre in genres)
+											{
+												if (genre == Genres.Drama.ToString())
+												{
+													<span class="blue">@Genres.Drama</span>
+												};
+												if (genre == Genres.Action.ToString())
+												{
+													<span class="green">@Genres.Action</span>
 												}
-	    								</div>
-											<p class="run-time"> Duration: @(Model.Movies[i].Duration)h.</p>
-											<p>Release: @Model.Movies[i].Release</p>
-											<p>Director: Not Available<a href="#">
-											</a></p>
-										</div>
-									</div>
-									}
-								}
-							}
+											}
+										}
+	    						</div>
+								</div>
+							</div>		
 						}
-				</div>
+					}			
+				</div>		
 				<div class="topbar-filter">
 					<p>Movies per page: <span>10</span></p>
 					<div class="pagination2">
@@ -254,27 +248,49 @@
 				<div class="sidebar">
 					<div class="searh-form">
 						<h4 class="sb-title">Search for movie</h4>
-						<form class="form-style-1" asp-controller="Search" asp-action="FilterSearch">
+						<form class="form-style-1" action="#">
 							<div class="row">
 								<div class="col-md-12 form-it">
 									<label>Movie name</label>
-									<input name="title" type="text" placeholder="Enter keywords">
+									<input type="text" placeholder="Enter keywords">
 								</div>
 								<div class="col-md-12 form-it">
 									<label>Genres & Subgenres</label>
 									<div class="group-ip">
 										<select
-											name="genres" multiple="" class="ui fluid dropdown">
+											name="skills" multiple="" class="ui fluid dropdown">
 											<option value="">Enter to filter genres</option>
-											@{
-												foreach (var genre in Enum.GetNames(typeof(Genres)))
-												{
-													<option value="@genre">@genre</option>
-												}
-											}
+											<option value="Action1">Action 1</option>
+					                        <option value="Action2">Action 2</option>
+					                        <option value="Action3">Action 3</option>
+					                        <option value="Action4">Action 4</option>
+					                        <option value="Action5">Action 5</option>
 										</select>
+									</div>	
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Rating Range</label>
+									<select>
+									  <option value="range">-- Select the rating range below --</option>
+									  <option value="saab">-- Select the rating range below --</option>
+									</select>
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Release Year</label>
+									<div class="row">
+										<div class="col-md-6">
+											<select>
+											  <option value="range">From</option>
+											  <option value="number">10</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<select>
+											  <option value="range">To</option>
+											  <option value="number">20</option>
+											</select>
+										</div>
 									</div>
-									
 								</div>
 								<div class="col-md-12 ">
 									<input class="submit" type="submit" value="submit">
@@ -283,7 +299,7 @@
 						</form>
 					</div>
 					<div class="ads">
-						<img src="~/images/uploads/ads1.png" alt="">
+						<img src="images/uploads/ads1.png" alt="">
 					</div>
 				</div>
 			</div>
@@ -295,7 +311,7 @@
 	<div class="container">
 		<div class="flex-parent-ft">
 			<div class="flex-child-ft item1">
-				 <a href="index-2.html"><img class="logo" src="~/images/logo1.png" alt=""></a>
+				 <a href="index-2.html"><img class="logo" src="images/logo1.png" alt=""></a>
 				 <p>5th Avenue st, manhattan<br>
 				New York, NY 10001</p>
 				<p>Call us: <a href="#">(+01) 202 342 6789</a></p>
@@ -349,11 +365,11 @@
 </footer>
 <!-- end of footer section-->
 
-<script src="~/js/jquery.js"></script>
-<script src="~/js/plugins.js"></script>
-<script src="~/js/plugins2.js"></script>
-<script src="~/js/custom.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/plugins2.js"></script>
+<script src="js/custom.js"></script>
 </body>
 
-<!-- movielist07:38-->
+<!-- moviegrid07:38-->
 </html>

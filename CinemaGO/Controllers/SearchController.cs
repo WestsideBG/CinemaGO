@@ -35,6 +35,20 @@ namespace CinemaGO.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult SearchGrid(string type, string searchbar)
+        {
+            MovieViewModel movieViewModel = new MovieViewModel();
+
+            if (type == "movie")
+            {
+                movieViewModel.Movies = _service.GetMovieByTitle(searchbar);
+                TempData["Model"] = null;
+                TempDataExtensions.Put(TempData, "Model", movieViewModel);
+                return RedirectToAction("IndexGrid", "Movies");
+            }
+            return RedirectToAction("Index");
+        }
+
         public IActionResult FilterSearch(string title, string[] genres)
         {
             MovieViewModel movieViewModel = new MovieViewModel();
