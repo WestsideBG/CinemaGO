@@ -71,6 +71,30 @@ namespace CinemaGO.Controllers
             TempDataExtensions.Put(TempData, "Model", movieViewModel);
             return RedirectToAction("Index", "Movies");
         }
+
+
+        public IActionResult FilterSearchGrid(string title, string[] genres)
+        {
+            MovieViewModel movieViewModel = new MovieViewModel();
+            bool hasTitle = title != null;
+            bool hasGenres = genres.Length > 0;
+
+            if (hasTitle && hasGenres)
+            {
+                movieViewModel.Movies = _service.GetMovieByGenre(genres).Where(m => m.Title.Contains(title)).ToList();
+            }
+            else if (hasTitle)
+            {
+                movieViewModel.Movies = _service.GetMovieByTitle(title);
+            }
+            else if (hasGenres)
+            {
+                movieViewModel.Movies = _service.GetMovieByGenre(genres).ToList();
+            }
+
+            TempDataExtensions.Put(TempData, "Model", movieViewModel);
+            return RedirectToAction("IndexGrid", "Movies");
+        }
     }
 
     public static class TempDataExtensions
